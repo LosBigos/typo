@@ -140,18 +140,41 @@ class Admin::ContentController < Admin::BaseController
   def real_action_for(action); { 'add' => :<<, 'remove' => :delete}[action]; end
 
   def new_or_edit
+    #print "TEST!!!!!!!!!!!!!!!!!!!!!"
     id = params[:id]
-    id = params[:article][:id] if params[:article] && params[:article][:id]
-    @article = Article.get_or_build_article(id)
-    @article.text_filter = current_user.text_filter if current_user.simple_editor?
-
-    @post_types = PostType.find(:all)
-    if request.post?
-      if params[:article][:draft]
-        get_fresh_or_existing_draft_for_article
-      else
-        if not @article.parent_id.nil?
-          @article = Article.find(@article.parent_id)
+    if not params[:commit].nil?
+      id_merge_with = params[:merge_with]
+      @article = Article.find(params[:id])
+      @article.merge_with(id_merge_with)
+      @article = Article.find(params[:id])
+      params[:article][:body_and_extended] = @article.body_and_extended
+      #print "AAAAAAAAAAAA!!!!!!!!!!!!!!"
+      #print request
+      id = params[:article][:id] if params[:article] && params[:article][:id]
+      @article = Article.get_or_build_article(id)
+      @article.text_filter = current_user.text_filter if current_user.simple_editor?
+      @post_types = PostType.find(:all)
+      if request.post?
+        if params[:article][:draft]
+          get_fresh_or_existing_draft_for_article
+        else
+          if not @article.parent_id.nil?
+            @article = Article.find(@article.parent_id)
+          end
+        end
+      end
+    else
+      id = params[:article][:id] if params[:article] && params[:article][:id]
+      @article = Article.get_or_build_article(id)
+      @article.text_filter = current_user.text_filter if current_user.simple_editor?
+      @post_types = PostType.find(:all)
+      if request.post?
+        if params[:article][:draft]
+          get_fresh_or_existing_draft_for_article
+        else
+          if not @article.parent_id.nil?
+            @article = Article.find(@article.parent_id)
+          end
         end
       end
     end

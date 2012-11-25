@@ -139,7 +139,12 @@
       <span class='help-block'><%=_("Excerpts are posts summaries that are shown on your blog homepage only but won’t appear on the post itself") %></span>
     </div>
   </div>
-
+  <div class='merg'>
+    <h4><%= _("Merge Articles") %></h4>
+    <p class='help-block'>Merge Articles and all comments</p>
+    <input type="text" id="merge_with" name="merge_with" value="<%=h params[:merge_with] %>" class='medium' />
+    <%= submit_tag(("Merge"), {:class => 'btn'}) %>
+  </div>
   <div class=''>
     <h4><%= _("Uploads") %></h4>
     <p class='help-block'>Uploads will be displayed as attachments in your RSS feed, but won't appear in your articles.</p>
@@ -147,7 +152,8 @@
       <%= render 'admin/content/attachment', { :attachment_num => 1, :hidden => false } -%>
     </ul>
   </div>    
-  </div>
+
+
 
 </div>
 

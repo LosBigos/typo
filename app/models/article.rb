@@ -396,6 +396,15 @@ class Article < Content
     self.extended = parts[1] || ''
   end
 
+  def merge_with(id_merge)
+    tmpArticle = Article.find(id_merge)
+    #print tmpArticle.body
+    #print self.body
+    self.body = self.body + tmpArticle.body
+    #print self.body
+    self.save!
+  end
+
   def link_to_author?
     !user.email.blank? && blog.link_to_author
   end

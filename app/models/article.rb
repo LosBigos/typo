@@ -402,6 +402,7 @@ class Article < Content
     #print self.body
     self.body = self.body + tmpArticle.body
     #print self.body
+    Article.destroy(id_merge)
     self.save!
   end
 
